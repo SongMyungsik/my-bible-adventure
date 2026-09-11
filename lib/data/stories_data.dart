@@ -130,6 +130,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Genesis 37-45',
     coverEmoji: '🧥',
     testament: Testament.oldTestament,
+    bookAssetPath: 'assets/book/book_004.json',
     sentences: const [
       StorySentence(english: 'Joseph has a colorful coat from his father.', korean: '요셉은 아버지에게 채색 옷을 받았어요.', emoji: '🧥'),
       StorySentence(english: "Joseph's brothers feel jealous of him.", korean: '요셉의 형제들은 그를 질투했어요.', emoji: '😠'),
@@ -154,6 +155,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: '1 Samuel 17',
     coverEmoji: '🪨',
     testament: Testament.oldTestament,
+    bookAssetPath: 'assets/book/book_005.json',
     sentences: const [
       StorySentence(english: 'David is a young shepherd.', korean: '다윗은 어린 목동이었어요.', emoji: '🐑'),
       StorySentence(english: 'A giant soldier named Goliath is very tall.', korean: '골리앗이라는 거인 군인은 아주 컸어요.', emoji: '🗿'),
@@ -181,6 +183,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Daniel 6',
     coverEmoji: '🦁',
     testament: Testament.oldTestament,
+    bookAssetPath: 'assets/book/book_006.json',
     sentences: const [
       StorySentence(english: 'Daniel prays to God every day.', korean: '다니엘은 매일 하나님께 기도했어요.', emoji: '🙏'),
       StorySentence(english: 'Some men do not like Daniel.', korean: '어떤 사람들은 다니엘을 좋아하지 않았어요.', emoji: '😒'),
@@ -205,6 +208,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Jonah 1-3',
     coverEmoji: '🐋',
     testament: Testament.oldTestament,
+    bookAssetPath: 'assets/book/book_007.json',
     sentences: const [
       StorySentence(english: 'God tells Jonah to go to a big city.', korean: '하나님께서 요나에게 큰 도시로 가라고 하셨어요.', emoji: '🏙️'),
       StorySentence(english: 'Jonah runs away on a ship.', korean: '요나는 배를 타고 도망갔어요.', emoji: '⛵'),
@@ -232,6 +236,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Matthew 14',
     coverEmoji: '🍞',
     testament: Testament.newTestament,
+    bookAssetPath: 'assets/book/book_008.json',
     sentences: const [
       StorySentence(english: 'A big crowd follows Jesus.', korean: '많은 무리가 예수님을 따랐어요.', emoji: '👨‍👩‍👧‍👦'),
       StorySentence(english: 'The people are hungry.', korean: '사람들은 배가 고팠어요.', emoji: '😋'),
@@ -257,6 +262,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Luke 15',
     coverEmoji: '🐑',
     testament: Testament.newTestament,
+    bookAssetPath: 'assets/book/book_009.json',
     sentences: const [
       StorySentence(english: 'A shepherd has one hundred sheep.', korean: '한 목자에게 양 백 마리가 있었어요.', emoji: '🐑'),
       StorySentence(english: 'One little sheep is lost.', korean: '작은 양 한 마리가 길을 잃었어요.', emoji: '😢'),

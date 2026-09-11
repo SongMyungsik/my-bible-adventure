@@ -6,6 +6,11 @@ import '../models/bible_story.dart';
 
 final _sceneMarker = RegExp(r'^Scene\s*\d+$', caseSensitive: false);
 
+// Some books number their scene titles inline, e.g. "1. Joseph and His
+// Family", "1.God Called Jonah", "1A Big Crowd" - stripped since the scene
+// viewer already shows "Scene N / total" separately.
+final _titleNumberPrefix = RegExp(r'^\d+\.?\s*');
+
 /// Parses a `assets/book/book_XXX.json` file (a flat list of
 /// {"영어": ..., "한글": ...} entries) into one [StorySentence] per line
 /// (title or body sentence), so the scene viewer can flip through them one
@@ -46,9 +51,10 @@ Future<List<StorySentence>> loadBookScenes(String assetPath) async {
     lineNumber++;
     final scenePadded = sceneNumber.toString().padLeft(2, '0');
     final linePadded = lineNumber.toString().padLeft(3, '0');
+    final title = isFirstLineInScene ? en.replaceFirst(_titleNumberPrefix, '') : en;
     lines.add(
       StorySentence(
-        english: en,
+        english: title,
         korean: ko,
         emoji: '📖',
         imagePath: '$imageFolder/$scenePadded.png',

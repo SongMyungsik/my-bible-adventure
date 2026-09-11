@@ -32,6 +32,10 @@ import 'dart:io';
 
 final _sceneMarker = RegExp(r'^Scene\s*\d+$', caseSensitive: false);
 
+// Mirrors lib/data/book_loader.dart's title cleanup, so narration doesn't
+// read "1." etc. aloud for scene titles like "1. Joseph and His Family".
+final _titleNumberPrefix = RegExp(r'^\d+\.?\s*');
+
 Future<void> main(List<String> args) async {
   final key = Platform.environment['AZURE_SPEECH_KEY'];
   final region = Platform.environment['AZURE_SPEECH_REGION'];
@@ -107,13 +111,19 @@ Future<void> _processBook(
 }
 
 /// Extracts each {"영어", ...} line (skipping "Scene N" markers) in order,
-/// mirroring lib/data/book_loader.dart's per-line numbering.
+/// mirroring lib/data/book_loader.dart's per-line numbering and title
+/// cleanup.
 List<String> _parseLines(List<dynamic> entries) {
   final lines = <String>[];
+  var isFirstLineInScene = false;
   for (final entry in entries.cast<Map<String, dynamic>>()) {
     final en = (entry['영어'] as String).trim();
-    if (_sceneMarker.hasMatch(en)) continue;
-    lines.add(en);
+    if (_sceneMarker.hasMatch(en)) {
+      isFirstLineInScene = true;
+      continue;
+    }
+    lines.add(isFirstLineInScene ? en.replaceFirst(_titleNumberPrefix, '') : en);
+    isFirstLineInScene = false;
   }
   return lines;
 }

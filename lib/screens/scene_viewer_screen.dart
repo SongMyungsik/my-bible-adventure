@@ -165,7 +165,17 @@ class _SceneIllustration extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         height: 200,
-        child: Image.asset(imagePath, fit: BoxFit.cover),
+        child: Image.asset(
+          imagePath,
+          fit: BoxFit.cover,
+          // Artwork for this book may not be ready yet - fall back to the
+          // emoji instead of showing a broken-image icon.
+          errorBuilder: (context, error, stackTrace) => Container(
+            color: Colors.white,
+            alignment: Alignment.center,
+            child: Text(scene.emoji, style: const TextStyle(fontSize: 72)),
+          ),
+        ),
       ),
     );
   }
