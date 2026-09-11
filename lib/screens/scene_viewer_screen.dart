@@ -80,9 +80,13 @@ class _SceneViewerScreenState extends State<SceneViewerScreen> {
               const SizedBox(height: 8),
               Text('Scene ${scene.sceneNumber ?? _index + 1} / ${scene.totalScenes ?? total}'),
               const SizedBox(height: 16),
-              _SceneIllustration(scene: scene),
+              Expanded(
+                flex: 3,
+                child: _SceneIllustration(scene: scene),
+              ),
               const SizedBox(height: 16),
               Expanded(
+                flex: 2,
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
@@ -158,13 +162,13 @@ class _SceneIllustration extends StatelessWidget {
   Widget build(BuildContext context) {
     final imagePath = scene.imagePath;
     if (imagePath == null) {
-      return Text(scene.emoji, style: const TextStyle(fontSize: 96));
+      return Center(child: Text(scene.emoji, style: const TextStyle(fontSize: 96)));
     }
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: SizedBox(
         width: double.infinity,
-        height: 200,
+        height: double.infinity,
         child: Image.asset(
           imagePath,
           fit: BoxFit.cover,
