@@ -129,6 +129,7 @@ final List<BibleStory> bibleStories = [
     description: 'Joseph forgives his brothers.',
     scriptureReference: 'Genesis 37-45',
     coverEmoji: '🧥',
+    coverImagePath: 'assets/images/book_004/02.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_004.json',
     sentences: const [
@@ -154,6 +155,7 @@ final List<BibleStory> bibleStories = [
     description: 'Young David trusts God and wins.',
     scriptureReference: '1 Samuel 17',
     coverEmoji: '🪨',
+    coverImagePath: 'assets/images/book_005/05.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_005.json',
     sentences: const [
@@ -182,6 +184,7 @@ final List<BibleStory> bibleStories = [
     description: 'God keeps Daniel safe with the lions.',
     scriptureReference: 'Daniel 6',
     coverEmoji: '🦁',
+    coverImagePath: 'assets/images/book_006/04.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_006.json',
     sentences: const [
@@ -207,6 +210,7 @@ final List<BibleStory> bibleStories = [
     description: 'Jonah learns to obey God.',
     scriptureReference: 'Jonah 1-3',
     coverEmoji: '🐋',
+    coverImagePath: 'assets/images/book_007/04.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_007.json',
     sentences: const [
@@ -235,6 +239,7 @@ final List<BibleStory> bibleStories = [
     description: 'Jesus shares a small lunch with everyone.',
     scriptureReference: 'Matthew 14',
     coverEmoji: '🍞',
+    coverImagePath: 'assets/images/book_008/03.png',
     testament: Testament.newTestament,
     bookAssetPath: 'assets/book/book_008.json',
     sentences: const [
@@ -261,6 +266,7 @@ final List<BibleStory> bibleStories = [
     description: 'A shepherd finds his lost little sheep.',
     scriptureReference: 'Luke 15',
     coverEmoji: '🐑',
+    coverImagePath: 'assets/images/book_009/06.png',
     testament: Testament.newTestament,
     bookAssetPath: 'assets/book/book_009.json',
     sentences: const [
@@ -295,3 +301,7 @@ VocabWord? vocabWordById(String id) {
   }
   return null;
 }
+
+/// Pre-generated Azure narration for a single vocabulary word (see
+/// `tool/generate_word_audio.dart`). Falls back to on-device TTS if missing.
+String wordAudioPath(VocabWord word) => 'assets/audio/words/${word.id}.mp3';

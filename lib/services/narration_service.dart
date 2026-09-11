@@ -11,7 +11,7 @@ class NarrationService {
   final AudioPlayer _player = AudioPlayer();
   final TtsService _tts;
 
-  Future<void> speak(String text, {String? audioAssetPath}) async {
+  Future<void> speak(String text, {String? audioAssetPath, double? rate}) async {
     if (audioAssetPath != null) {
       try {
         await _player.stop();
@@ -22,7 +22,7 @@ class NarrationService {
         // No pre-generated file yet (or it failed to load) - fall back below.
       }
     }
-    await _tts.speak(text);
+    await _tts.speak(text, rate: rate);
   }
 
   Future<void> stop() async {

@@ -87,7 +87,13 @@ class _StoryCover extends StatelessWidget {
     }
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
-      child: Image.asset(imagePath, width: double.infinity, fit: BoxFit.fitWidth),
+      child: Image.asset(
+        imagePath,
+        width: double.infinity,
+        fit: BoxFit.fitWidth,
+        errorBuilder: (context, error, stackTrace) =>
+            Text(story.coverEmoji, style: const TextStyle(fontSize: 96)),
+      ),
     );
   }
 }

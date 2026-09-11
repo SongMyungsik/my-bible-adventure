@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../data/stories_data.dart';
 import '../models/bible_story.dart';
 import '../models/game_round.dart';
 import '../providers/progress_provider.dart';
-import '../services/tts_service.dart';
+import '../services/narration_service.dart';
 import 'story_complete_screen.dart';
 
 class GameScreen extends StatefulWidget {
@@ -17,7 +18,7 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  final _tts = TtsService();
+  final _narration = NarrationService();
   late final List<GameRound> _rounds = generateGameRounds(widget.story.vocabulary);
   int _index = 0;
   int _correctCount = 0;
@@ -32,11 +33,14 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   void dispose() {
-    _tts.stop();
+    _narration.stop();
     super.dispose();
   }
 
-  void _speakPrompt() => _tts.speak(_rounds[_index].targetWord.english, rate: 0.6);
+  void _speakPrompt() {
+    final word = _rounds[_index].targetWord;
+    _narration.speak(word.english, audioAssetPath: wordAudioPath(word), rate: 0.6);
+  }
 
   void _selectOption(int optionIndex) {
     if (_showFeedback) return;

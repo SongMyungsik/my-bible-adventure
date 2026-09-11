@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../data/stories_data.dart';
 import '../models/vocab_word.dart';
 import '../providers/progress_provider.dart';
-import '../services/tts_service.dart';
+import '../services/narration_service.dart';
 import '../widgets/vocab_flashcard.dart';
 
 class VocabBookScreen extends StatelessWidget {
@@ -55,7 +55,13 @@ class _WordCard extends StatelessWidget {
         context: context,
         builder: (_) => Dialog(
           backgroundColor: Colors.transparent,
-          child: VocabFlashcard(word: word, onSpeak: () => TtsService().speak(word.english)),
+          child: VocabFlashcard(
+            word: word,
+            onSpeak: () => NarrationService().speak(
+              word.english,
+              audioAssetPath: wordAudioPath(word),
+            ),
+          ),
         ),
       ),
       child: Container(
