@@ -267,6 +267,7 @@ final List<BibleStory> bibleStories = [
     description: 'Jesus is born, our Savior.',
     scriptureReference: 'Luke 2',
     coverEmoji: '👼',
+    coverImagePath: 'assets/images/book_011/04.png',
     testament: Testament.newTestament,
     bookAssetPath: 'assets/book/book_011.json',
     sentences: const [
@@ -294,6 +295,7 @@ final List<BibleStory> bibleStories = [
     description: 'John baptizes Jesus in the river.',
     scriptureReference: 'Matthew 3',
     coverEmoji: '💧',
+    coverImagePath: 'assets/images/book_012/05.png',
     testament: Testament.newTestament,
     bookAssetPath: 'assets/book/book_012.json',
     sentences: const [
@@ -320,6 +322,7 @@ final List<BibleStory> bibleStories = [
     description: 'A kind stranger helps a hurt man.',
     scriptureReference: 'Luke 10',
     coverEmoji: '🤝',
+    coverImagePath: 'assets/images/book_013/02.png',
     testament: Testament.newTestament,
     bookAssetPath: 'assets/book/book_013.json',
     sentences: const [
@@ -399,6 +402,7 @@ final List<BibleStory> bibleStories = [
     description: 'Jesus rises from the dead.',
     scriptureReference: 'Matthew 28, Luke 24',
     coverEmoji: '🌅',
+    coverImagePath: 'assets/images/book_014/04.png',
     testament: Testament.newTestament,
     bookAssetPath: 'assets/book/book_014.json',
     sentences: const [
