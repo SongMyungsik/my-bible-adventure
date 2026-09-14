@@ -9,7 +9,7 @@ final List<BibleStory> bibleStories = [
     description: 'God makes the world in seven days.',
     scriptureReference: 'Genesis 1-2',
     coverEmoji: '🌍',
-    coverImagePath: 'assets/images/book_001/06.png',
+    coverImagePath: 'assets/images/book_001/05.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_001.json',
     sentences: const [
@@ -73,7 +73,7 @@ final List<BibleStory> bibleStories = [
     description: 'God saves Noah and the animals.',
     scriptureReference: 'Genesis 6-9',
     coverEmoji: '🚢',
-    coverImagePath: 'assets/images/book_002/02.png',
+    coverImagePath: 'assets/images/book_002/06.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_002.json',
     sentences: const [
@@ -184,7 +184,7 @@ final List<BibleStory> bibleStories = [
     description: 'God keeps Daniel safe with the lions.',
     scriptureReference: 'Daniel 6',
     coverEmoji: '🦁',
-    coverImagePath: 'assets/images/book_006/04.png',
+    coverImagePath: 'assets/images/book_006/05.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_006.json',
     sentences: const [
@@ -210,7 +210,7 @@ final List<BibleStory> bibleStories = [
     description: 'Jonah learns to obey God.',
     scriptureReference: 'Jonah 1-3',
     coverEmoji: '🐋',
-    coverImagePath: 'assets/images/book_007/04.png',
+    coverImagePath: 'assets/images/book_007/05.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_007.json',
     sentences: const [
@@ -239,7 +239,7 @@ final List<BibleStory> bibleStories = [
     description: 'Jesus shares a small lunch with everyone.',
     scriptureReference: 'Matthew 14',
     coverEmoji: '🍞',
-    coverImagePath: 'assets/images/book_008/03.png',
+    coverImagePath: 'assets/images/book_008/06.png',
     testament: Testament.newTestament,
     bookAssetPath: 'assets/book/book_008.json',
     sentences: const [

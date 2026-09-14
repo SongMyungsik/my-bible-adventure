@@ -109,38 +109,60 @@ class _StoryGridCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(story.coverEmoji, style: const TextStyle(fontSize: 44)),
-              const SizedBox(height: 8),
-              Text(
-                story.koreanTitle,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-              ),
-              Text(
-                story.title,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
-              ),
-              const SizedBox(height: 6),
-              if (completed)
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: List.generate(
-                    3,
-                    (i) => Icon(
-                      i < (stars ?? 0) ? Icons.star_rounded : Icons.star_outline_rounded,
-                      size: 16,
-                      color: Colors.amber,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            AspectRatio(
+              aspectRatio: 1.3,
+              child: story.coverImagePath == null
+                  ? Container(
+                      color: Colors.deepPurple.shade50,
+                      alignment: Alignment.center,
+                      child: Text(story.coverEmoji, style: const TextStyle(fontSize: 44)),
+                    )
+                  : Image.asset(
+                      story.coverImagePath!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: Colors.deepPurple.shade50,
+                        alignment: Alignment.center,
+                        child: Text(story.coverEmoji, style: const TextStyle(fontSize: 44)),
+                      ),
                     ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
+              child: Column(
+                children: [
+                  Text(
+                    story.koreanTitle,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   ),
-                ),
-            ],
-          ),
+                  Text(
+                    story.title,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                  ),
+                  const SizedBox(height: 6),
+                  if (completed)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: List.generate(
+                        3,
+                        (i) => Icon(
+                          i < (stars ?? 0) ? Icons.star_rounded : Icons.star_outline_rounded,
+                          size: 16,
+                          color: Colors.amber,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
