@@ -74,6 +74,7 @@ flutter:
     - assets/images/book_007/
     - assets/images/book_008/
     - assets/images/book_009/
+    - assets/images/book_010/
     - assets/book/
     - assets/audio/book_001/
     - assets/audio/book_002/
@@ -84,6 +85,11 @@ flutter:
     - assets/audio/book_007/
     - assets/audio/book_008/
     - assets/audio/book_009/
+    - assets/audio/book_010/
+    - assets/audio/book_011/
+    - assets/audio/book_012/
+    - assets/audio/book_013/
+    - assets/audio/book_014/
     - assets/audio/words/
 
   # To add assets to your application, add an assets section, like this:
