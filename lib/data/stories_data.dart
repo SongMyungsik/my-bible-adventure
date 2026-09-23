@@ -245,6 +245,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Jonah 1-3',
     coverEmoji: '🐋',
     coverImagePath: 'assets/images/book_007/05.png',
+    coloringImagePath: 'assets/coloring/book_007.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_007.json',
     sentences: const [
