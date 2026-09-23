@@ -7,6 +7,7 @@ import '../models/game_round.dart';
 import '../providers/progress_provider.dart';
 import '../services/narration_service.dart';
 import 'coloring_screen.dart';
+import '../widgets/emoji_icon.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key, required this.story});
@@ -153,7 +154,7 @@ class _GameScreenState extends State<GameScreen> {
                         child: Stack(
                           children: [
                             Center(
-                              child: Text(option.emoji, style: const TextStyle(fontSize: 56)),
+                              child: EmojiIcon(option.emoji, size: 80),
                             ),
                             if (badgeIcon != null)
                               Positioned(

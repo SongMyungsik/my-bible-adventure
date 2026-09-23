@@ -6,6 +6,7 @@ import '../models/vocab_word.dart';
 import '../providers/progress_provider.dart';
 import '../services/narration_service.dart';
 import '../widgets/vocab_flashcard.dart';
+import '../widgets/emoji_icon.dart';
 
 class VocabBookScreen extends StatelessWidget {
   const VocabBookScreen({super.key});
@@ -73,7 +74,7 @@ class _WordCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(word.emoji, style: const TextStyle(fontSize: 40)),
+            EmojiIcon(word.emoji, size: 52),
             const SizedBox(height: 8),
             Text(word.english, style: const TextStyle(fontWeight: FontWeight.bold)),
             Text(word.korean, style: TextStyle(color: Colors.grey.shade600, fontSize: 13)),

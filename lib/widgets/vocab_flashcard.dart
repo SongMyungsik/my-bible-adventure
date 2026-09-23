@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../models/vocab_word.dart';
+import 'emoji_icon.dart';
 
 class VocabFlashcard extends StatefulWidget {
   const VocabFlashcard({
@@ -124,7 +125,7 @@ class _VocabFlashcardState extends State<VocabFlashcard>
             : Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(widget.word.emoji, style: const TextStyle(fontSize: 64)),
+                  EmojiIcon(widget.word.emoji, size: 88),
                   const SizedBox(height: 12),
                   Text(
                     widget.word.english,

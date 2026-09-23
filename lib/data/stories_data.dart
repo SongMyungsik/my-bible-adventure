@@ -59,7 +59,7 @@ final List<BibleStory> bibleStories = [
     ],
     vocabulary: const [
       VocabWord(id: 'creation_light', english: 'light', korean: '빛', emoji: '💡', exampleSentence: 'On Day 1, God makes light.'),
-      VocabWord(id: 'creation_sky', english: 'sky', korean: '하늘', emoji: '☁️', exampleSentence: 'On Day 2, God makes the sky and the sea.'),
+      VocabWord(id: 'creation_sky', english: 'sky', korean: '하늘', emoji: '🌤️', exampleSentence: 'On Day 2, God makes the sky and the sea.'),
       VocabWord(id: 'creation_land', english: 'land', korean: '땅', emoji: '🏞️', exampleSentence: 'On Day 3, God makes the land and plants.'),
       VocabWord(id: 'creation_star', english: 'star', korean: '별', emoji: '⭐', exampleSentence: 'On Day 4, God makes the sun, moon, and stars.'),
       VocabWord(id: 'creation_fish', english: 'fish', korean: '물고기', emoji: '🐟', exampleSentence: 'On Day 5, God makes the fish and birds.'),
@@ -149,7 +149,7 @@ final List<BibleStory> bibleStories = [
       VocabWord(id: 'joseph_jealous', english: 'jealous', korean: '질투하는', emoji: '😠', exampleSentence: "Joseph's brothers feel jealous of him."),
       VocabWord(id: 'joseph_brother', english: 'brother', korean: '형제', emoji: '👬', exampleSentence: 'The brothers sell Joseph in Egypt.'),
       VocabWord(id: 'joseph_forgive', english: 'forgive', korean: '용서하다', emoji: '🤗', exampleSentence: 'Joseph forgives his brothers.'),
-      VocabWord(id: 'joseph_save', english: 'save', korean: '구하다', emoji: '🌾', exampleSentence: 'Joseph saves his family from hunger.'),
+      VocabWord(id: 'joseph_save', english: 'save', korean: '구하다', emoji: '🛟', exampleSentence: 'Joseph saves his family from hunger.'),
     ],
   ),
   BibleStory(
@@ -374,7 +374,7 @@ final List<BibleStory> bibleStories = [
       StorySentence(english: 'There is a lot of food left over.', korean: '음식이 아주 많이 남았어요.', emoji: '🧺'),
     ],
     vocabulary: const [
-      VocabWord(id: 'feed_crowd', english: 'crowd', korean: '무리', emoji: '👨‍👩‍👧‍👦', exampleSentence: 'A big crowd follows Jesus.'),
+      VocabWord(id: 'feed_crowd', english: 'crowd', korean: '무리', emoji: '👥', exampleSentence: 'A big crowd follows Jesus.'),
       VocabWord(id: 'feed_hungry', english: 'hungry', korean: '배고픈', emoji: '😋', exampleSentence: 'The people are hungry.'),
       VocabWord(id: 'feed_share', english: 'share', korean: '나누다', emoji: '🤲', exampleSentence: 'Jesus shares the food with everyone.'),
       VocabWord(id: 'feed_bread', english: 'bread', korean: '빵', emoji: '🍞', exampleSentence: 'A boy shares five loaves and two fish.'),

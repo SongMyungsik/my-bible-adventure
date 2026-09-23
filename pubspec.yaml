@@ -64,6 +64,7 @@ flutter:
 
   assets:
     - assets/coloring/
+    - assets/emoji/
     - assets/images/
     - assets/images/book_001/
     - assets/images/book_002/

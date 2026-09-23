@@ -8,6 +8,7 @@ import 'package:my_bible_adventure/app.dart';
 import 'package:my_bible_adventure/data/book_loader.dart';
 import 'package:my_bible_adventure/data/stories_data.dart';
 import 'package:my_bible_adventure/providers/progress_provider.dart';
+import 'package:my_bible_adventure/widgets/emoji_icon.dart';
 
 /// Narration (flutter_tts, audioplayers) has no platform implementation in
 /// the widget-test VM. On a real device/web these plugin calls succeed and
@@ -118,7 +119,9 @@ void main() {
           .data!;
       final targetWord = story.vocabulary.firstWhere((w) => w.english == promptText);
 
-      final emojiFinder = find.text(targetWord.emoji).first;
+      final emojiFinder = find
+          .byWidgetPredicate((w) => w is EmojiIcon && w.emoji == targetWord.emoji)
+          .first;
       await tester.ensureVisible(emojiFinder);
       await tester.tap(emojiFinder);
       await tester.pumpAndSettle();
