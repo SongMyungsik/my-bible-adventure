@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../screens/drawing_screen.dart';
 import '../screens/games_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/my_room_screen.dart';
@@ -19,6 +20,7 @@ class _MainShellState extends State<MainShell> {
     HomeScreen(),
     StoriesScreen(),
     GamesScreen(),
+    DrawingScreen(),
     MyRoomScreen(),
   ];
 
@@ -33,6 +35,7 @@ class _MainShellState extends State<MainShell> {
           NavigationDestination(icon: Icon(Icons.home_rounded), label: '홈'),
           NavigationDestination(icon: Icon(Icons.menu_book_rounded), label: '이야기'),
           NavigationDestination(icon: Icon(Icons.videogame_asset_rounded), label: '게임'),
+          NavigationDestination(icon: Icon(Icons.palette_rounded), label: '그리기'),
           NavigationDestination(icon: Icon(Icons.emoji_people_rounded), label: '내방'),
         ],
       ),

@@ -8,7 +8,7 @@ import 'package:my_bible_adventure/data/stories_data.dart';
 import 'package:my_bible_adventure/providers/progress_provider.dart';
 
 void main() {
-  testWidgets('Home tab shows a recommended story and bottom nav has 4 tabs',
+  testWidgets('Home tab shows a recommended story and bottom nav has 5 tabs',
       (tester) async {
     SharedPreferences.setMockInitialValues({});
 
@@ -38,6 +38,7 @@ void main() {
     expect(find.text('홈'), findsOneWidget);
     expect(find.text('이야기'), findsOneWidget);
     expect(find.text('게임'), findsOneWidget);
+    expect(find.text('그리기'), findsOneWidget);
     expect(find.text('내방'), findsOneWidget);
 
     await tester.tap(find.text('이야기'));

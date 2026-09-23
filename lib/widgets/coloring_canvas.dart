@@ -6,6 +6,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:image/image.dart' as img;
 
 import '../models/coloring_page.dart';
+import '../services/coloring_progress_service.dart';
 
 /// How close a neighboring pixel's color must be to the tapped pixel's
 /// color to be considered "the same region" and get filled too. Loose
@@ -63,6 +64,11 @@ class _ColoringCanvasState extends State<ColoringCanvas> {
   img.Image? _working;
   ui.Image? _displayImage;
   final List<img.Image> _history = [];
+
+  /// Every fill applied so far, oldest first; saved so coloring picks up
+  /// where it left off. Undo pops the last one, Clear empties it.
+  final List<ColoringFill> _fills = [];
+  final _progressService = ColoringProgressService();
   final _boxKey = GlobalKey();
   final _transform = TransformationController();
   bool _isZoomed = false;
@@ -94,9 +100,29 @@ class _ColoringCanvasState extends State<ColoringCanvas> {
     final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     final decoded = img.decodePng(bytes)!.convert(numChannels: 4);
     _original = decoded;
-    _working = decoded.clone();
+    final working = decoded.clone();
+    _replaySavedFills(working, await _progressService.load(widget.page.imageAssetPath));
+    _working = working;
     await _refreshDisplayImage();
     if (mounted) setState(() {});
+  }
+
+  /// Re-applies saved fills in order, rebuilding the undo history for the
+  /// last [_maxHistory] of them so Undo keeps working after reopening.
+  void _replaySavedFills(img.Image working, List<ColoringFill> saved) {
+    for (var i = 0; i < saved.length; i++) {
+      final fill = saved[i];
+      if (fill.x >= working.width || fill.y >= working.height) continue;
+      final keepSnapshot = saved.length - i <= _maxHistory;
+      final snapshot = keepSnapshot ? working.clone() : null;
+      if (!_floodFill(working, fill.x, fill.y, Color(fill.color))) continue;
+      _fills.add(fill);
+      if (snapshot != null) _history.add(snapshot);
+    }
+  }
+
+  void _saveFills() {
+    _progressService.save(widget.page.imageAssetPath, List.of(_fills));
   }
 
   Future<void> _refreshDisplayImage() async {
@@ -117,7 +143,9 @@ class _ColoringCanvasState extends State<ColoringCanvas> {
     if (_history.isEmpty) return;
     setState(() {
       _working = _history.removeLast();
+      _fills.removeLast();
     });
+    _saveFills();
     _refreshDisplayImage().then((_) {
       if (mounted) setState(() {});
       widget.controller?._refresh();
@@ -128,6 +156,8 @@ class _ColoringCanvasState extends State<ColoringCanvas> {
     final original = _original;
     if (original == null) return;
     _history.clear();
+    _fills.clear();
+    _saveFills();
     setState(() => _working = original.clone());
     _refreshDisplayImage().then((_) {
       if (mounted) setState(() {});
@@ -152,6 +182,8 @@ class _ColoringCanvasState extends State<ColoringCanvas> {
     while (_history.length > _maxHistory) {
       _history.removeAt(0);
     }
+    _fills.add((x: x, y: y, color: widget.selectedColor.toARGB32()));
+    _saveFills();
     await _refreshDisplayImage();
     if (mounted) setState(() {});
     widget.controller?._refresh();

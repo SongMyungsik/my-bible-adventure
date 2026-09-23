@@ -6,30 +6,44 @@ import '../models/coloring_page.dart';
 import '../widgets/coloring_canvas.dart';
 import 'story_complete_screen.dart';
 
-const _palette = [
+// Roughly rainbow order, then skin/earth tones and neutrals. White doubles
+// as an eraser for a region that was filled by mistake.
+const _palette = <Color>[
   Colors.red,
+  Colors.deepOrange,
   Colors.orange,
   Colors.amber,
+  Colors.yellow,
+  Colors.lightGreen,
   Colors.green,
+  Colors.lightBlue,
   Colors.blue,
   Colors.purple,
-  Colors.deepOrange,
   Colors.pink,
+  Color(0xFFFFCC99), // peach, for faces and hands
   Colors.brown,
+  Colors.grey,
   Colors.black,
+  Colors.white,
 ];
 
 class ColoringScreen extends StatefulWidget {
   const ColoringScreen({
     super.key,
     required this.story,
-    required this.stars,
-    required this.newBadges,
+    this.stars,
+    this.newBadges = const [],
   });
 
   final BibleStory story;
-  final int stars;
+
+  /// Game result from the story flow. Null when opened from the 그리기 tab,
+  /// in which case finishing just goes back instead of to the story
+  /// complete screen.
+  final int? stars;
   final List<String> newBadges;
+
+  bool get _isFromStoryFlow => stars != null;
 
   @override
   State<ColoringScreen> createState() => _ColoringScreenState();
@@ -47,11 +61,16 @@ class _ColoringScreenState extends State<ColoringScreen> {
   }
 
   void _finish() {
+    final stars = widget.stars;
+    if (stars == null) {
+      Navigator.of(context).pop();
+      return;
+    }
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => StoryCompleteScreen(
           story: widget.story,
-          stars: widget.stars,
+          stars: stars,
           newBadges: widget.newBadges,
         ),
       ),
@@ -62,7 +81,10 @@ class _ColoringScreenState extends State<ColoringScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F8FF),
-      appBar: AppBar(title: const Text('색칠하기 시간!'), automaticallyImplyLeading: false),
+      appBar: AppBar(
+        title: const Text('색칠하기 시간!'),
+        automaticallyImplyLeading: !widget._isFromStoryFlow,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
