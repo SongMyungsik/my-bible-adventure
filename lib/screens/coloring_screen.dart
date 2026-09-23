@@ -62,7 +62,7 @@ class _ColoringScreenState extends State<ColoringScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F8FF),
-      appBar: AppBar(title: const Text('Coloring Time!'), automaticallyImplyLeading: false),
+      appBar: AppBar(title: const Text('색칠하기 시간!'), automaticallyImplyLeading: false),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
@@ -122,7 +122,7 @@ class _ColoringScreenState extends State<ColoringScreen> {
                       builder: (context, _) => OutlinedButton.icon(
                         onPressed: _controller.canUndo ? _controller.undo : null,
                         icon: const Icon(Icons.undo_rounded),
-                        label: const Text('Undo'),
+                        label: const Text('되돌리기'),
                       ),
                     ),
                   ),
@@ -131,7 +131,7 @@ class _ColoringScreenState extends State<ColoringScreen> {
                     child: OutlinedButton.icon(
                       onPressed: _controller.clear,
                       icon: const Icon(Icons.layers_clear_rounded),
-                      label: const Text('Clear'),
+                      label: const Text('모두 지우기'),
                     ),
                   ),
                 ],
