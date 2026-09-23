@@ -78,12 +78,24 @@ void main() {
       await _tapButtonWithText(tester, isLast ? 'See Results' : 'Next');
     }
 
+    // Coloring screen: pick a color, tap inside a known-safe spot of the
+    // house body region (avoiding the windows/door rects nested inside
+    // it), then finish.
+    expect(find.text('Coloring Time!'), findsOneWidget);
+    final canvasFinder = find.byType(GestureDetector).first;
+    final canvasTopLeft = tester.getTopLeft(canvasFinder);
+    final canvasScale = tester.getSize(canvasFinder).width / 320;
+    await tester.tapAt(canvasTopLeft + const Offset(100, 250) * canvasScale);
+    await tester.pumpAndSettle();
+    await _tapButtonWithText(tester, '완료');
+
     // Complete screen: perfect score, checklist, badges.
     expect(find.text('Great Job!'), findsOneWidget);
     expect(find.text('읽기 완료'), findsOneWidget);
     expect(find.text('듣기 완료'), findsOneWidget);
     expect(find.text('따라 말하기 완료'), findsOneWidget);
     expect(find.text('게임 완료'), findsOneWidget);
+    expect(find.text('색칠 완료'), findsOneWidget);
     expect(find.text('New badge unlocked!'), findsOneWidget);
     expect(find.text('Story Explorer'), findsOneWidget);
     expect(find.text('Game Champion'), findsOneWidget);

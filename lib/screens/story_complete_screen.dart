@@ -56,43 +56,54 @@ class _StoryCompleteScreenState extends State<StoryCompleteScreen> {
       appBar: AppBar(title: const Text('Great Job!'), automaticallyImplyLeading: false),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
           child: Column(
             children: [
-              const Spacer(),
-              const Text('🎉', style: TextStyle(fontSize: 64)),
-              const SizedBox(height: 8),
-              Text(
-                '${widget.story.title} 완료!',
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-              StarRating(stars: widget.stars, size: 40),
-              const SizedBox(height: 24),
-              const _ChecklistItem(label: '읽기 완료'),
-              const _ChecklistItem(label: '듣기 완료'),
-              const _ChecklistItem(label: '따라 말하기 완료'),
-              const _ChecklistItem(label: '게임 완료'),
-              if (_allNewBadges.isNotEmpty) ...[
-                const SizedBox(height: 24),
-                const Text('New badge unlocked!', style: TextStyle(fontWeight: FontWeight.bold)),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 12,
-                  children: _allNewBadges.map((id) {
-                    final badge = allBadges.firstWhere((b) => b.id == id);
-                    return Chip(avatar: Text(badge.emoji), label: Text(badge.title));
-                  }).toList(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 12),
+                      const Text('🎉', style: TextStyle(fontSize: 64)),
+                      const SizedBox(height: 8),
+                      Text(
+                        '${widget.story.title} 완료!',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 16),
+                      StarRating(stars: widget.stars, size: 40),
+                      const SizedBox(height: 24),
+                      const _ChecklistItem(label: '읽기 완료'),
+                      const _ChecklistItem(label: '듣기 완료'),
+                      const _ChecklistItem(label: '따라 말하기 완료'),
+                      const _ChecklistItem(label: '게임 완료'),
+                      const _ChecklistItem(label: '색칠 완료'),
+                      if (_allNewBadges.isNotEmpty) ...[
+                        const SizedBox(height: 24),
+                        const Text('New badge unlocked!', style: TextStyle(fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 8),
+                        Wrap(
+                          spacing: 12,
+                          children: _allNewBadges.map((id) {
+                            final badge = allBadges.firstWhere((b) => b.id == id);
+                            return Chip(avatar: Text(badge.emoji), label: Text(badge.title));
+                          }).toList(),
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
-              ],
-              const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  onPressed: _goToNextStory,
-                  icon: const Icon(Icons.arrow_forward_rounded),
-                  label: const Text('다음 이야기로'),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    onPressed: _goToNextStory,
+                    icon: const Icon(Icons.arrow_forward_rounded),
+                    label: const Text('다음 이야기로'),
+                  ),
                 ),
               ),
             ],

@@ -6,7 +6,7 @@ import '../models/bible_story.dart';
 import '../models/game_round.dart';
 import '../providers/progress_provider.dart';
 import '../services/narration_service.dart';
-import 'story_complete_screen.dart';
+import 'coloring_screen.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key, required this.story});
@@ -75,7 +75,7 @@ class _GameScreenState extends State<GameScreen> {
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (_) => StoryCompleteScreen(
+        builder: (_) => ColoringScreen(
           story: widget.story,
           stars: stars,
           newBadges: badges,
