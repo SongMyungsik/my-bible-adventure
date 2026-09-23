@@ -37,32 +37,13 @@ class ColoringScreen extends StatefulWidget {
 
 class _ColoringScreenState extends State<ColoringScreen> {
   late final ColoringPage _page = coloringPageForStory(widget.story);
-  late Map<String, Color> _regionColors = {
-    for (final region in _page.regions) region.id: region.initialColor,
-  };
-  final List<MapEntry<String, Color>> _history = [];
+  final _controller = ColoringCanvasController();
   Color _selectedColor = _palette.first;
 
-  void _handleRegionTap(String id) {
-    final current = _regionColors[id];
-    if (current == null || current == _selectedColor) return;
-    setState(() {
-      _history.add(MapEntry(id, current));
-      _regionColors = {..._regionColors, id: _selectedColor};
-    });
-  }
-
-  void _undo() {
-    if (_history.isEmpty) return;
-    final last = _history.removeLast();
-    setState(() => _regionColors = {..._regionColors, last.key: last.value});
-  }
-
-  void _clear() {
-    setState(() {
-      _regionColors = {for (final region in _page.regions) region.id: region.initialColor};
-      _history.clear();
-    });
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   void _finish() {
@@ -106,8 +87,8 @@ class _ColoringScreenState extends State<ColoringScreen> {
                   child: Center(
                     child: ColoringCanvas(
                       page: _page,
-                      regionColors: _regionColors,
-                      onRegionTap: _handleRegionTap,
+                      selectedColor: _selectedColor,
+                      controller: _controller,
                     ),
                   ),
                 ),
@@ -145,16 +126,19 @@ class _ColoringScreenState extends State<ColoringScreen> {
                       Row(
                         children: [
                           Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: _history.isEmpty ? null : _undo,
-                              icon: const Icon(Icons.undo_rounded),
-                              label: const Text('Undo'),
+                            child: ListenableBuilder(
+                              listenable: _controller,
+                              builder: (context, _) => OutlinedButton.icon(
+                                onPressed: _controller.canUndo ? _controller.undo : null,
+                                icon: const Icon(Icons.undo_rounded),
+                                label: const Text('Undo'),
+                              ),
                             ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: OutlinedButton.icon(
-                              onPressed: _clear,
+                              onPressed: _controller.clear,
                               icon: const Icon(Icons.layers_clear_rounded),
                               label: const Text('Clear'),
                             ),

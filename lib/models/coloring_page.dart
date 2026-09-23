@@ -1,30 +1,8 @@
-import 'package:flutter/material.dart';
-
-/// One fillable shape in a coloring page, defined as raw SVG path data
-/// (the same syntax as an SVG `<path d="...">` attribute).
-class ColoringRegion {
-  const ColoringRegion({
-    required this.id,
-    required this.svgPath,
-    this.initialColor = Colors.white,
-  });
-
-  final String id;
-  final String svgPath;
-  final Color initialColor;
-}
-
-/// A coloring page: a fixed-size canvas ([width]x[height]) containing a
-/// list of regions, painted in order (later regions draw on top of
-/// earlier ones, e.g. a door on top of a house body).
+/// A coloring page: a line-art image whose enclosed white areas get
+/// flood-filled with color, tap by tap (like a paint-bucket tool), rather
+/// than a set of predefined vector regions.
 class ColoringPage {
-  const ColoringPage({
-    required this.width,
-    required this.height,
-    required this.regions,
-  });
+  const ColoringPage({required this.imageAssetPath});
 
-  final double width;
-  final double height;
-  final List<ColoringRegion> regions;
+  final String imageAssetPath;
 }

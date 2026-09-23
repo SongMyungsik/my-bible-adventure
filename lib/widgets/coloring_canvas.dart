@@ -1,59 +1,229 @@
+import 'dart:async';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
-import 'package:path_drawing/path_drawing.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:image/image.dart' as img;
 
 import '../models/coloring_page.dart';
 
-/// Renders a [ColoringPage] and reports which region was tapped. Purely
-/// presentational - the caller owns the region-color state.
+/// How close a neighboring pixel's color must be to the tapped pixel's
+/// color to be considered "the same region" and get filled too. Loose
+/// enough to cover anti-aliased pixels near the fill boundary, tight
+/// enough not to leak through a solid outline.
+const _colorToleranceSquared = 40 * 40;
+
+/// Caps memory use: each undo step holds a full copy of the image.
+const _maxHistory = 15;
+
+/// Drives a [ColoringCanvas] from outside it (e.g. Undo/Clear buttons
+/// elsewhere on the screen), since the pixel buffer itself has to live
+/// inside the canvas's own state.
+class ColoringCanvasController extends ChangeNotifier {
+  _ColoringCanvasState? _state;
+
+  bool get isReady => _state?._working != null;
+  bool get canUndo => _state?._history.isNotEmpty ?? false;
+
+  void undo() => _state?._undo();
+  void clear() => _state?._clear();
+
+  void _attach(_ColoringCanvasState state) {
+    _state = state;
+    notifyListeners();
+  }
+
+  void _detach(_ColoringCanvasState state) {
+    if (_state == state) _state = null;
+  }
+
+  void _refresh() => notifyListeners();
+}
+
+/// Renders a [ColoringPage] image and flood-fills the tapped region with
+/// [selectedColor] on tap, like a paint-bucket tool.
 class ColoringCanvas extends StatefulWidget {
   const ColoringCanvas({
     super.key,
     required this.page,
-    required this.regionColors,
-    required this.onRegionTap,
+    required this.selectedColor,
+    this.controller,
   });
 
   final ColoringPage page;
-  final Map<String, Color> regionColors;
-  final ValueChanged<String> onRegionTap;
+  final Color selectedColor;
+  final ColoringCanvasController? controller;
 
   @override
   State<ColoringCanvas> createState() => _ColoringCanvasState();
 }
 
 class _ColoringCanvasState extends State<ColoringCanvas> {
-  late final Map<String, Path> _paths = {
-    for (final region in widget.page.regions) region.id: parseSvgPathData(region.svgPath),
-  };
+  img.Image? _original;
+  img.Image? _working;
+  ui.Image? _displayImage;
+  final List<img.Image> _history = [];
   final _boxKey = GlobalKey();
 
-  void _handleTapUp(TapUpDetails details) {
-    final box = _boxKey.currentContext?.findRenderObject() as RenderBox?;
-    if (box == null || box.size.width == 0) return;
-    final scale = box.size.width / widget.page.width;
-    final point = details.localPosition / scale;
+  @override
+  void initState() {
+    super.initState();
+    widget.controller?._attach(this);
+    _load();
+  }
 
-    for (final region in widget.page.regions.reversed) {
-      if (_paths[region.id]!.contains(point)) {
-        widget.onRegionTap(region.id);
-        return;
+  @override
+  void dispose() {
+    widget.controller?._detach(this);
+    super.dispose();
+  }
+
+  Future<void> _load() async {
+    final data = await rootBundle.load(widget.page.imageAssetPath);
+    final bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    final decoded = img.decodePng(bytes)!.convert(numChannels: 4);
+    _original = decoded;
+    _working = decoded.clone();
+    await _refreshDisplayImage();
+    if (mounted) setState(() {});
+  }
+
+  Future<void> _refreshDisplayImage() async {
+    final working = _working;
+    if (working == null) return;
+    final completer = Completer<ui.Image>();
+    ui.decodeImageFromPixels(
+      working.getBytes(order: img.ChannelOrder.rgba),
+      working.width,
+      working.height,
+      ui.PixelFormat.rgba8888,
+      completer.complete,
+    );
+    _displayImage = await completer.future;
+  }
+
+  void _undo() {
+    if (_history.isEmpty) return;
+    setState(() {
+      _working = _history.removeLast();
+    });
+    _refreshDisplayImage().then((_) {
+      if (mounted) setState(() {});
+      widget.controller?._refresh();
+    });
+  }
+
+  void _clear() {
+    final original = _original;
+    if (original == null) return;
+    _history.clear();
+    setState(() => _working = original.clone());
+    _refreshDisplayImage().then((_) {
+      if (mounted) setState(() {});
+      widget.controller?._refresh();
+    });
+  }
+
+  Future<void> _handleTapUp(TapUpDetails details) async {
+    final working = _working;
+    final box = _boxKey.currentContext?.findRenderObject() as RenderBox?;
+    if (working == null || box == null || box.size.width == 0) return;
+
+    final x = (details.localPosition.dx * working.width / box.size.width).floor();
+    final y = (details.localPosition.dy * working.height / box.size.height).floor();
+    if (x < 0 || y < 0 || x >= working.width || y >= working.height) return;
+
+    final snapshot = working.clone();
+    final filled = _floodFill(working, x, y, widget.selectedColor);
+    if (!filled) return;
+
+    _history.add(snapshot);
+    while (_history.length > _maxHistory) {
+      _history.removeAt(0);
+    }
+    await _refreshDisplayImage();
+    if (mounted) setState(() {});
+    widget.controller?._refresh();
+  }
+
+  /// Scanline flood fill: fills the run of matching pixels on the tapped
+  /// row, then seeds the rows above/below wherever they still match,
+  /// instead of queuing every pixel individually.
+  bool _floodFill(img.Image image, int startX, int startY, Color fillColor) {
+    final target = image.getPixel(startX, startY);
+    final newR = (fillColor.r * 255).round();
+    final newG = (fillColor.g * 255).round();
+    final newB = (fillColor.b * 255).round();
+
+    bool matches(int x, int y) {
+      final p = image.getPixel(x, y);
+      final dr = p.r - target.r;
+      final dg = p.g - target.g;
+      final db = p.b - target.b;
+      return dr * dr + dg * dg + db * db <= _colorToleranceSquared;
+    }
+
+    if (!matches(startX, startY)) return false;
+    // Already (near) this exact color? nothing to do.
+    final dr = target.r - newR, dg = target.g - newG, db = target.b - newB;
+    if (dr * dr + dg * dg + db * db <= _colorToleranceSquared) return false;
+
+    final width = image.width;
+    final height = image.height;
+    final stack = <(int, int)>[(startX, startY)];
+    var didFill = false;
+
+    while (stack.isNotEmpty) {
+      final (sx, sy) = stack.removeLast();
+      if (!matches(sx, sy)) continue;
+
+      var left = sx;
+      while (left - 1 >= 0 && matches(left - 1, sy)) {
+        left--;
+      }
+      var right = sx;
+      while (right + 1 < width && matches(right + 1, sy)) {
+        right++;
+      }
+
+      for (var x = left; x <= right; x++) {
+        image.setPixelRgba(x, sy, newR, newG, newB, 255);
+      }
+      didFill = true;
+
+      for (final ny in [sy - 1, sy + 1]) {
+        if (ny < 0 || ny >= height) continue;
+        var x = left;
+        while (x <= right) {
+          if (matches(x, ny)) {
+            stack.add((x, ny));
+            while (x <= right && matches(x, ny)) {
+              x++;
+            }
+          } else {
+            x++;
+          }
+        }
       }
     }
+    return didFill;
   }
 
   @override
   Widget build(BuildContext context) {
+    final displayImage = _displayImage;
+    final working = _working;
+    if (displayImage == null || working == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return AspectRatio(
-      aspectRatio: widget.page.width / widget.page.height,
+      aspectRatio: working.width / working.height,
       child: GestureDetector(
         key: _boxKey,
         onTapUp: _handleTapUp,
         child: CustomPaint(
-          painter: _ColoringPainter(
-            page: widget.page,
-            paths: _paths,
-            regionColors: widget.regionColors,
-          ),
+          painter: _ColoringImagePainter(displayImage),
           size: Size.infinite,
         ),
       ),
@@ -61,42 +231,22 @@ class _ColoringCanvasState extends State<ColoringCanvas> {
   }
 }
 
-class _ColoringPainter extends CustomPainter {
-  _ColoringPainter({
-    required this.page,
-    required this.paths,
-    required this.regionColors,
-  });
+class _ColoringImagePainter extends CustomPainter {
+  _ColoringImagePainter(this.image);
 
-  final ColoringPage page;
-  final Map<String, Path> paths;
-  final Map<String, Color> regionColors;
+  final ui.Image image;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final scale = size.width / page.width;
-    canvas.save();
-    canvas.scale(scale);
-
-    final fillPaint = Paint()..style = PaintingStyle.fill;
-    final strokePaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 3
-      ..strokeJoin = StrokeJoin.round
-      ..color = Colors.black87;
-
-    for (final region in page.regions) {
-      final path = paths[region.id]!;
-      fillPaint.color = regionColors[region.id] ?? region.initialColor;
-      canvas.drawPath(path, fillPaint);
-      canvas.drawPath(path, strokePaint);
-    }
-    canvas.restore();
+    paintImage(
+      canvas: canvas,
+      rect: Offset.zero & size,
+      image: image,
+      fit: BoxFit.fill,
+      filterQuality: FilterQuality.medium,
+    );
   }
 
-  // The color map is mutated by the same reference from the parent's
-  // setState, so identity checks here would miss real changes - simplest
-  // to just always repaint this small canvas.
   @override
-  bool shouldRepaint(covariant _ColoringPainter oldDelegate) => true;
+  bool shouldRepaint(covariant _ColoringImagePainter oldDelegate) => oldDelegate.image != image;
 }
