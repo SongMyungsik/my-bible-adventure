@@ -6,7 +6,6 @@
     "background_color": "#673AB7",
     "theme_color": "#673AB7",
     "description": "A Bible-story English learning app for kids.",
-    "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
         {
