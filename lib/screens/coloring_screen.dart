@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 
 import '../data/coloring_pages_data.dart';
 import '../models/bible_story.dart';
@@ -41,7 +42,18 @@ class _ColoringScreenState extends State<ColoringScreen> {
   Color _selectedColor = _palette.first;
 
   @override
+  void initState() {
+    super.initState();
+    // Landscape gives the picture much more room to tap accurately than
+    // portrait does; restored back to portrait on the way out.
+    SystemChrome.setPreferredOrientations(
+        const [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+  }
+
+  @override
   void dispose() {
+    SystemChrome.setPreferredOrientations(
+        const [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     _controller.dispose();
     super.dispose();
   }
@@ -65,19 +77,12 @@ class _ColoringScreenState extends State<ColoringScreen> {
       appBar: AppBar(title: const Text('Coloring Time!'), automaticallyImplyLeading: false),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text(
-                '색을 고르고 그림을 톡톡 눌러 칠해보세요!',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black54),
-              ),
-              const SizedBox(height: 12),
               Expanded(
-                flex: 3,
                 child: Container(
-                  width: double.infinity,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -93,23 +98,30 @@ class _ColoringScreenState extends State<ColoringScreen> {
                   ),
                 ),
               ),
-              Expanded(
-                flex: 2,
+              const SizedBox(width: 16),
+              SizedBox(
+                width: 200,
                 child: SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      const Text(
+                        '색을 고르고\n그림을 톡톡 눌러 칠해보세요!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.black54, fontSize: 13),
+                      ),
                       const SizedBox(height: 12),
                       Wrap(
                         alignment: WrapAlignment.center,
-                        spacing: 10,
-                        runSpacing: 10,
+                        spacing: 8,
+                        runSpacing: 8,
                         children: _palette.map((color) {
                           final selected = color == _selectedColor;
                           return GestureDetector(
                             onTap: () => setState(() => _selectedColor = color),
                             child: Container(
-                              width: 34,
-                              height: 34,
+                              width: 32,
+                              height: 32,
                               decoration: BoxDecoration(
                                 color: color,
                                 shape: BoxShape.circle,
@@ -122,36 +134,25 @@ class _ColoringScreenState extends State<ColoringScreen> {
                           );
                         }).toList(),
                       ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ListenableBuilder(
-                              listenable: _controller,
-                              builder: (context, _) => OutlinedButton.icon(
-                                onPressed: _controller.canUndo ? _controller.undo : null,
-                                icon: const Icon(Icons.undo_rounded),
-                                label: const Text('Undo'),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: _controller.clear,
-                              icon: const Icon(Icons.layers_clear_rounded),
-                              label: const Text('Clear'),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        width: double.infinity,
-                        child: FilledButton(
-                          onPressed: _finish,
-                          child: const Text('완료'),
+                      const SizedBox(height: 16),
+                      ListenableBuilder(
+                        listenable: _controller,
+                        builder: (context, _) => OutlinedButton.icon(
+                          onPressed: _controller.canUndo ? _controller.undo : null,
+                          icon: const Icon(Icons.undo_rounded),
+                          label: const Text('Undo'),
                         ),
+                      ),
+                      const SizedBox(height: 8),
+                      OutlinedButton.icon(
+                        onPressed: _controller.clear,
+                        icon: const Icon(Icons.layers_clear_rounded),
+                        label: const Text('Clear'),
+                      ),
+                      const SizedBox(height: 16),
+                      FilledButton(
+                        onPressed: _finish,
+                        child: const Text('완료'),
                       ),
                     ],
                   ),
