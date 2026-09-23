@@ -64,7 +64,7 @@ Future<void> _waitForColoringPageToLoad(WidgetTester tester) async {
     // coloring screen has finished loading.
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 50)));
     await tester.pump();
-    final onColoringScreen = find.text('Coloring Time!').evaluate().isNotEmpty;
+    final onColoringScreen = find.text('색칠하기 시간!').evaluate().isNotEmpty;
     final stillLoading = find.byType(CircularProgressIndicator).evaluate().isNotEmpty;
     if (onColoringScreen && !stillLoading) return;
   }
@@ -72,7 +72,7 @@ Future<void> _waitForColoringPageToLoad(WidgetTester tester) async {
 
 void main() {
   testWidgets(
-      'Full golden path: intro -> scenes -> speak -> game -> complete -> next story',
+      'Full golden path: intro -> scenes -> game -> complete -> next story',
       (tester) async {
     SharedPreferences.setMockInitialValues({});
     _mockNarrationChannels();
@@ -103,13 +103,6 @@ void main() {
     // Walk through every scene.
     for (var i = 0; i < scenes.length - 1; i++) {
       await _tapButtonWithText(tester, 'Next');
-    }
-    await _tapButtonWithText(tester, 'Next: Speak');
-
-    // Speak practice: skip recording, just walk through sentences.
-    expect(find.text('따라 말하기'), findsOneWidget);
-    for (var i = 0; i < scenes.length - 1; i++) {
-      await _tapButtonWithText(tester, 'Next Sentence');
     }
     await _tapButtonWithText(tester, 'Next: Game');
 
@@ -147,7 +140,7 @@ void main() {
     // flood-fill it, then finish. Uses a fraction of the rendered canvas
     // box rather than a fixed pixel, since the underlying image's own
     // resolution isn't known here.
-    expect(find.text('Coloring Time!'), findsOneWidget);
+    expect(find.text('색칠하기 시간!'), findsOneWidget);
     final canvasFinder = find.byType(GestureDetector).first;
     final canvasTopLeft = tester.getTopLeft(canvasFinder);
     final canvasSize = tester.getSize(canvasFinder);

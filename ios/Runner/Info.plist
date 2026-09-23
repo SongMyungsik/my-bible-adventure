@@ -26,8 +26,6 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>말하기 연습에서 아이의 목소리를 녹음하고 다시 들려주기 위해 마이크가 필요해요.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

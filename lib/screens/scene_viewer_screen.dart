@@ -6,7 +6,7 @@ import '../providers/progress_provider.dart';
 import '../services/narration_service.dart';
 import '../services/tts_service.dart';
 import '../widgets/highlighted_sentence.dart';
-import 'speak_practice_screen.dart';
+import 'game_screen.dart';
 
 class SceneViewerScreen extends StatefulWidget {
   const SceneViewerScreen({super.key, required this.story, required this.scenes});
@@ -50,7 +50,7 @@ class _SceneViewerScreenState extends State<SceneViewerScreen> {
       progress.learnWords(widget.story.vocabulary.map((w) => w.id));
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => SpeakPracticeScreen(story: widget.story, scenes: widget.scenes),
+          builder: (_) => GameScreen(story: widget.story),
         ),
       );
     } else {
@@ -139,7 +139,7 @@ class _SceneViewerScreenState extends State<SceneViewerScreen> {
                       flex: 2,
                       child: FilledButton(
                         onPressed: _advance,
-                        child: Text(_isLastScene ? 'Next: Speak' : 'Next'),
+                        child: Text(_isLastScene ? 'Next: Game' : 'Next'),
                       ),
                     ),
                   ],

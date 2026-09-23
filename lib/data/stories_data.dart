@@ -160,6 +160,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Exodus 14',
     coverEmoji: '🌊',
     coverImagePath: 'assets/images/book_010/01.png',
+    coloringImagePath: 'assets/coloring/book_010.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_010.json',
     sentences: const [
@@ -275,6 +276,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Luke 2',
     coverEmoji: '👼',
     coverImagePath: 'assets/images/book_011/04.png',
+    coloringImagePath: 'assets/coloring/book_011.png',
     testament: Testament.newTestament,
     bookAssetPath: 'assets/book/book_011.json',
     sentences: const [
@@ -303,6 +305,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Matthew 3',
     coverEmoji: '💧',
     coverImagePath: 'assets/images/book_012/05.png',
+    coloringImagePath: 'assets/coloring/book_012.png',
     testament: Testament.newTestament,
     bookAssetPath: 'assets/book/book_012.json',
     sentences: const [
@@ -330,6 +333,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Luke 10',
     coverEmoji: '🤝',
     coverImagePath: 'assets/images/book_013/02.png',
+    coloringImagePath: 'assets/coloring/book_013.png',
     testament: Testament.newTestament,
     bookAssetPath: 'assets/book/book_013.json',
     sentences: const [
@@ -357,6 +361,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Matthew 14',
     coverEmoji: '🍞',
     coverImagePath: 'assets/images/book_008/06.png',
+    coloringImagePath: 'assets/coloring/book_008.png',
     testament: Testament.newTestament,
     bookAssetPath: 'assets/book/book_008.json',
     sentences: const [
@@ -384,6 +389,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Luke 15',
     coverEmoji: '🐑',
     coverImagePath: 'assets/images/book_009/06.png',
+    coloringImagePath: 'assets/coloring/book_009.png',
     testament: Testament.newTestament,
     bookAssetPath: 'assets/book/book_009.json',
     sentences: const [
@@ -410,6 +416,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Matthew 28, Luke 24',
     coverEmoji: '🌅',
     coverImagePath: 'assets/images/book_014/04.png',
+    coloringImagePath: 'assets/coloring/book_014.png',
     testament: Testament.newTestament,
     bookAssetPath: 'assets/book/book_014.json',
     sentences: const [

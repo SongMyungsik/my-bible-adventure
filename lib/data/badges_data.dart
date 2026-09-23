@@ -15,10 +15,8 @@ class BadgeInfo {
 const storyExplorerBadgeId = 'story_explorer';
 const wordMasterBadgeId = 'word_master';
 const gameChampionBadgeId = 'game_champion';
-const speakingStarBadgeId = 'speaking_star';
 
 const wordMasterThreshold = 20;
-const speakingStarThreshold = 3;
 
 const List<BadgeInfo> allBadges = [
   BadgeInfo(
@@ -38,11 +36,5 @@ const List<BadgeInfo> allBadges = [
     title: 'Game Champion',
     description: 'Get a perfect 3-star game score',
     emoji: '🏆',
-  ),
-  BadgeInfo(
-    id: speakingStarBadgeId,
-    title: 'Speaking Star',
-    description: 'Practice speaking in $speakingStarThreshold stories',
-    emoji: '🎤',
   ),
 ];

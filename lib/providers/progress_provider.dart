@@ -75,14 +75,6 @@ class ProgressProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> recordSpeakPracticeCompleted() async {
-    _rolloverWeekIfNeeded();
-    _progress.speakPracticeCount++;
-    _recalculateBadges();
-    await _service.save(_progress);
-    notifyListeners();
-  }
-
   Future<void> markStoryCompleted(String storyId) async {
     _rolloverWeekIfNeeded();
     if (_progress.completedStoryIds.add(storyId)) {
@@ -158,9 +150,6 @@ class ProgressProvider extends ChangeNotifier {
     }
     if (_progress.gameStars.values.any((stars) => stars >= 3)) {
       earned.add(gameChampionBadgeId);
-    }
-    if (_progress.speakPracticeCount >= speakingStarThreshold) {
-      earned.add(speakingStarBadgeId);
     }
 
     final newlyEarned =

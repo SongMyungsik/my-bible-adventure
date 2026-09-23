@@ -5,7 +5,6 @@ class UserProgress {
     Map<String, int>? gameStars,
     Set<String>? badgeIds,
     Set<String>? learnedWordIds,
-    this.speakPracticeCount = 0,
     String? weekStartIso,
     this.sentencesReadThisWeek = 0,
     this.wordsLearnedThisWeek = 0,
@@ -22,7 +21,6 @@ class UserProgress {
   final Map<String, int> gameStars;
   final Set<String> badgeIds;
   final Set<String> learnedWordIds;
-  int speakPracticeCount;
 
   String weekStartIso;
   int sentencesReadThisWeek;
@@ -36,7 +34,6 @@ class UserProgress {
         'gameStars': gameStars,
         'badgeIds': badgeIds.toList(),
         'learnedWordIds': learnedWordIds.toList(),
-        'speakPracticeCount': speakPracticeCount,
         'weekStartIso': weekStartIso,
         'sentencesReadThisWeek': sentencesReadThisWeek,
         'wordsLearnedThisWeek': wordsLearnedThisWeek,
@@ -55,7 +52,6 @@ class UserProgress {
       badgeIds: (json['badgeIds'] as List?)?.cast<String>().toSet(),
       learnedWordIds:
           (json['learnedWordIds'] as List?)?.cast<String>().toSet(),
-      speakPracticeCount: json['speakPracticeCount'] as int? ?? 0,
       weekStartIso: json['weekStartIso'] as String?,
       sentencesReadThisWeek: json['sentencesReadThisWeek'] as int? ?? 0,
       wordsLearnedThisWeek: json['wordsLearnedThisWeek'] as int? ?? 0,
