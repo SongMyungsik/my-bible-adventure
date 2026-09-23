@@ -10,6 +10,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Genesis 1-2',
     coverEmoji: '🌍',
     coverImagePath: 'assets/images/book_001/05.png',
+    coloringImagePath: 'assets/coloring/book_001.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_001.json',
     sentences: const [
@@ -74,6 +75,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Genesis 6-9',
     coverEmoji: '🚢',
     coverImagePath: 'assets/images/book_002/06.png',
+    coloringImagePath: 'assets/coloring/book_002.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_002.json',
     sentences: const [
@@ -104,6 +106,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Genesis 12-21',
     coverEmoji: '⛺',
     coverImagePath: 'assets/images/book_003/04.png',
+    coloringImagePath: 'assets/coloring/book_003.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_003.json',
     sentences: const [
@@ -130,6 +133,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Genesis 37-45',
     coverEmoji: '🧥',
     coverImagePath: 'assets/images/book_004/02.png',
+    coloringImagePath: 'assets/coloring/book_004.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_004.json',
     sentences: const [
@@ -184,6 +188,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: '1 Samuel 17',
     coverEmoji: '🪨',
     coverImagePath: 'assets/images/book_005/05.png',
+    coloringImagePath: 'assets/coloring/book_005.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_005.json',
     sentences: const [
@@ -213,6 +218,7 @@ final List<BibleStory> bibleStories = [
     scriptureReference: 'Daniel 6',
     coverEmoji: '🦁',
     coverImagePath: 'assets/images/book_006/05.png',
+    coloringImagePath: 'assets/coloring/book_006.png',
     testament: Testament.oldTestament,
     bookAssetPath: 'assets/book/book_006.json',
     sentences: const [
