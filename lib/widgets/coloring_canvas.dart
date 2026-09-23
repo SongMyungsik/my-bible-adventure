@@ -150,22 +150,28 @@ class _ColoringCanvasState extends State<ColoringCanvas> {
   /// row, then seeds the rows above/below wherever they still match,
   /// instead of queuing every pixel individually.
   bool _floodFill(img.Image image, int startX, int startY, Color fillColor) {
-    final target = image.getPixel(startX, startY);
+    // image.getPixel() returns a live cursor into the pixel buffer, not a
+    // value snapshot - it must be read into plain numbers up front, or its
+    // r/g/b would start reflecting the newly-painted color as soon as the
+    // fill overwrites the start pixel itself, corrupting every match check
+    // after that point.
+    final startPixel = image.getPixel(startX, startY);
+    final targetR = startPixel.r, targetG = startPixel.g, targetB = startPixel.b;
     final newR = (fillColor.r * 255).round();
     final newG = (fillColor.g * 255).round();
     final newB = (fillColor.b * 255).round();
 
     bool matches(int x, int y) {
       final p = image.getPixel(x, y);
-      final dr = p.r - target.r;
-      final dg = p.g - target.g;
-      final db = p.b - target.b;
+      final dr = p.r - targetR;
+      final dg = p.g - targetG;
+      final db = p.b - targetB;
       return dr * dr + dg * dg + db * db <= _colorToleranceSquared;
     }
 
     if (!matches(startX, startY)) return false;
     // Already (near) this exact color? nothing to do.
-    final dr = target.r - newR, dg = target.g - newG, db = target.b - newB;
+    final dr = targetR - newR, dg = targetG - newG, db = targetB - newB;
     if (dr * dr + dg * dg + db * db <= _colorToleranceSquared) return false;
 
     final width = image.width;
