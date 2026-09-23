@@ -51,6 +51,7 @@ class BibleStory {
     required this.vocabulary,
     this.bookAssetPath,
     this.coverImagePath,
+    this.coloringImagePath,
   });
 
   final String id;
@@ -70,4 +71,8 @@ class BibleStory {
   /// Optional illustration shown on the story intro screen instead of
   /// [coverEmoji].
   final String? coverImagePath;
+
+  /// Optional line-art image used for this story's end-of-story coloring
+  /// activity. Falls back to a shared sample page when unset.
+  final String? coloringImagePath;
 }

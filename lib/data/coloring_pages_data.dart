@@ -1,9 +1,9 @@
 import '../models/bible_story.dart';
 import '../models/coloring_page.dart';
 
-/// A placeholder coloring page used for every story until per-story line
-/// art is ready. Swap the lookup in [coloringPageForStory] once real
-/// artwork exists per book.
-const _samplePage = ColoringPage(imageAssetPath: 'assets/coloring/sample_001.png');
+/// Shared coloring page used for any story that doesn't have its own
+/// [BibleStory.coloringImagePath] set yet.
+const _sampleAssetPath = 'assets/coloring/sample_001.png';
 
-ColoringPage coloringPageForStory(BibleStory story) => _samplePage;
+ColoringPage coloringPageForStory(BibleStory story) =>
+    ColoringPage(imageAssetPath: story.coloringImagePath ?? _sampleAssetPath);
