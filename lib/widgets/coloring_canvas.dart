@@ -64,19 +64,30 @@ class _ColoringCanvasState extends State<ColoringCanvas> {
   ui.Image? _displayImage;
   final List<img.Image> _history = [];
   final _boxKey = GlobalKey();
+  final _transform = TransformationController();
+  bool _isZoomed = false;
 
   @override
   void initState() {
     super.initState();
     widget.controller?._attach(this);
+    _transform.addListener(_onTransformChanged);
     _load();
   }
 
   @override
   void dispose() {
     widget.controller?._detach(this);
+    _transform.dispose();
     super.dispose();
   }
+
+  void _onTransformChanged() {
+    final zoomed = _transform.value.getMaxScaleOnAxis() > 1.01;
+    if (zoomed != _isZoomed) setState(() => _isZoomed = zoomed);
+  }
+
+  void _resetZoom() => _transform.value = Matrix4.identity();
 
   Future<void> _load() async {
     final data = await rootBundle.load(widget.page.imageAssetPath);
@@ -223,15 +234,40 @@ class _ColoringCanvasState extends State<ColoringCanvas> {
       return const Center(child: CircularProgressIndicator());
     }
 
+    // Two-finger pinch zooms in so small regions are easy for little
+    // fingers to hit; one finger pans while zoomed. Taps inside the
+    // InteractiveViewer child arrive in the child's own (unscaled)
+    // coordinates, so the fill math in _handleTapUp needs no changes.
     return AspectRatio(
       aspectRatio: working.width / working.height,
-      child: GestureDetector(
-        key: _boxKey,
-        onTapUp: _handleTapUp,
-        child: CustomPaint(
-          painter: _ColoringImagePainter(displayImage),
-          size: Size.infinite,
-        ),
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: InteractiveViewer(
+              transformationController: _transform,
+              minScale: 1,
+              maxScale: 5,
+              child: GestureDetector(
+                key: _boxKey,
+                onTapUp: _handleTapUp,
+                child: CustomPaint(
+                  painter: _ColoringImagePainter(displayImage),
+                  size: Size.infinite,
+                ),
+              ),
+            ),
+          ),
+          if (_isZoomed)
+            Positioned(
+              top: 4,
+              right: 4,
+              child: IconButton.filledTonal(
+                onPressed: _resetZoom,
+                icon: const Icon(Icons.zoom_out_map_rounded),
+                tooltip: '원래 크기로',
+              ),
+            ),
+        ],
       ),
     );
   }
